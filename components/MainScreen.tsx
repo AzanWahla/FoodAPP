@@ -1,77 +1,37 @@
-import React from "react";
-import { View, StyleSheet, ScrollView, Text, FlatList } from "react-native";
-import { useGroceryData } from "./useGroceryData";
-import { Header } from "./Header";
-import { CategoryList } from "./CategoryList";
-import { GroceryItem } from "./GroceryItem";
-import { ItemsView } from "./ItemsView";
+import React from 'react';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useQuranData } from '@/hooks/useQuranData';
+import TopBar from './TopBar';
+import GreetingSection from './GreetingSection';
+import LastReadCard from './LastReadCard';
+import SurahList from './SurahList';
+import BottomBar from './BottomBar';
 
-export const MainScreen = () => {
-  const { groceryItems, loading, error } = useGroceryData();
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    // Implement a refresh function in useGroceryData and call it here
-    // For now, we'll just simulate a refresh
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
-
-  if (loading) {
-    return (
-      <View style={styles.centerContainer}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.centerContainer}>
-        <Text>Error: {error}</Text>
-        <Text>Please check your internet connection and try again.</Text>
-      </View>
-    );
-  }
+export default function App() {
+  const { surahs, lastRead } = useQuranData();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Header />
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="light" />
+      <View style={styles.content}>
+        <TopBar />
+        <GreetingSection name="Azan Wahla" />
+        <LastReadCard surah={lastRead} />
+        <SurahList surahs={surahs} />
       </View>
-      <View style={styles.category}>
-        <CategoryList />
-      </View>
-      <View style={styles.flatlist}>
-        <ItemsView groceryItems={groceryItems} />
-      </View>
-    </View>
+      <BottomBar />
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#8A2BE2',
   },
-  header: {
-    flex: 0.15,
-  },
-  category: {
-    flex: 0.15,
-    paddingLeft: 10,
-  },
-  flatlist: {
-    flex: 0.7,
-  },
-  groceryList: {
-    paddingHorizontal: 16,
-  },
-  centerContainer: {
+  content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
   },
 });

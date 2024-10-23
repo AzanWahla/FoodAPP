@@ -1,4 +1,5 @@
-import { MainScreen } from '@/components/MainScreen';
+
+import MainScreen from '@/components/MainScreen';
 import React from 'react';
 import { SafeAreaView,Text, StatusBar, StyleSheet } from 'react-native';
 
